@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>School Report Generator</title>
+
+  <!-- Include jsPDF and jsPDF-AutoTable libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+  <script src="scripts.js" defer></script>
+
+  <!-- Link to Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>School Report Generator</h1>
+    </header>
+
+    <section class="student-info">
+      <h2>Student Information</h2>
+      <div class="form-group">
+        <label for="studentName">Student Name:</label>
+        <input type="text" id="studentName" placeholder="Enter student name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="system">Grading System:</label>
+        <select id="system">
+          <option value="zimsec">ZIMSEC</option>
+          <option value="cambridge">Cambridge</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="subjects-section">
+      <h2>Subjects</h2>
+      <table class="subject-table">
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Score</th>
+            <th>Grade</th>
+          </tr>
+        </thead>
+        <tbody id="subjects"></tbody>
+      </table>
+
+      <div class="total-score">
+        <label for="Total">Total:</label>
+        <input type="text" id="Total" readonly>
+      </div>
+
+      <div class="button-group">
+        <button type="button" onclick="addSubject()">Add Subject</button>
+        <button type="button" onclick="clearReport()">Clear Report</button>
+        <button type="button" onclick="generateReport()">Generate Report</button>
+      </div>
+    </section>
+
+    <section id="report" class="hidden">
+      <h2>Generated Report</h2>
+      <p>Report for: <strong><span id="reportName"></span></strong></p>
+
+      <table id="reportTable">
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Grade</th>
+          </tr>
+        </thead>
+        <tbody id="reportBody"></tbody>
+      </table>
+
+      <div class="download-button">
+        <button type="button" onclick="downloadPDF()">Download PDF</button>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2025 School Report Generator by Charlton</p>
+    </footer>
+  </div>
+</body>
+</html>
