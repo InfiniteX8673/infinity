@@ -49,6 +49,7 @@ Programming Languages	Technologies & Frameworks	Tools
 ✅ Designed physics simulation experiments for learning projectile motion and kinematics.
 ✅ Prototyped custom siren systems using Arduino and Raspberry Pi (integrated with AI!).
 ✅ Created interactive games and webpages with responsive design and animation.
+✅ Published a website on GitHub pages at`https://infinitex8673.github.io/infinity/`.
 
     Small wins, building into massive success.
 
