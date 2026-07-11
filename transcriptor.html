@@ -3,138 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Live Transcription</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #121212;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1rem;
-      transition: background 0.3s, color 0.3s;
-    }
-
-    body.light {
-      background: white;
-      color: black;
-    }
-
-    .container {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 20px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 1rem;
-      width: 95%;
-      max-width: 600px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-      overflow-y: auto;
-      transition: background 0.3s;
-      position: relative;
-      z-index: 1;
-    }
-
-    body.light .container {
-      background: rgba(0, 0, 0, 0.05);
-    }
-
-    #transcript {
-      min-height: 200px;
-      max-height: 400px;
-      overflow-y: auto;
-      white-space: pre-wrap;
-      margin: 1rem 0;
-      padding: 1rem;
-      background-color: rgba(0, 0, 0, 0.3);
-      border-radius: 10px;
-      font-size: 1rem;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    body.light #transcript {
-      background-color: rgba(255, 255, 255, 0.3);
-      color: black;
-    }
-
-    button, select {
-      background: rgba(255, 255, 255, 0.1);
-      color: inherit;
-      border: none;
-      padding: 0.6rem 1.2rem;
-      margin: 0.3rem;
-      border-radius: 10px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-
-    button:hover, select:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .status-indicator {
-      margin-top: 0.5rem;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .mic-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: red;
-      animation: blink 1s infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.2; }
-    }
-
-    label {
-      font-size: 0.95rem;
-    }
-
-    /* Offline warning banner */
-    #offlineBanner {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background-color: #b00020;
-      color: white;
-      text-align: center;
-      padding: 0.8rem;
-      font-weight: bold;
-      z-index: 9999;
-      display: none;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    }
-  </style>
+  <title>Transcription Tool — Charlton</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-  <div id="offlineBanner">⚠️ You are offline. Please connect to the internet for speech recognition to work.</div>
+  <div id="offlineBanner">You are offline. Speech recognition requires an internet connection.</div>
 
-  <div class="container">
-    <h2>🎙️ Live Transcription</h2>
+  <nav>
+    <a class="logo" href="index.html">Charlton</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Work</a></li>
+      <li><a href="comps.html">Projects</a></li>
+      <li><a href="report.html" class="active">Tools</a></li>
+    </ul>
+  </nav>
+
+  <div class="page">
+    <div class="page-header">
+      <a class="back-link" href="index.html">&larr; Back</a>
+      <h1>Live Transcription</h1>
+      <p>Real-time voice-to-text using the Web Speech API.</p>
+    </div>
 
     <div class="controls">
       <button onclick="startListening()">Start</button>
       <button onclick="stopListening()">Stop</button>
       <button onclick="clearTranscript()">Clear</button>
-      <button onclick="toggleDarkMode()">Toggle Theme</button>
-      <button onclick="downloadTranscriptPDF()">Download (.pdf)</button>
+      <button onclick="downloadTranscriptPDF()">Download PDF</button>
 
       <select id="langSelect">
         <option value="en-US">English</option>
@@ -143,9 +40,9 @@
         <option value="de-DE">German</option>
       </select>
 
-      <label style="margin: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+      <label>
         <input type="checkbox" id="showTime" checked />
-        Show Time
+        Timestamps
       </label>
     </div>
 
@@ -157,8 +54,8 @@
     </div>
   </div>
 
-  <!-- jsPDF for PDF export -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <footer>&copy; 2025 Charlton</footer>
+
   <script>
     let recognition;
     let isListening = false;
@@ -167,7 +64,7 @@
       const banner = document.getElementById('offlineBanner');
       if (!navigator.onLine) {
         banner.style.display = 'block';
-        stopListening(); // Stop recognition if offline
+        stopListening();
       } else {
         banner.style.display = 'none';
       }
@@ -175,8 +72,6 @@
 
     window.addEventListener('online', updateOnlineStatus);
     window.addEventListener('offline', updateOnlineStatus);
-
-    // Run once on page load
     updateOnlineStatus();
 
     function startListening() {
@@ -187,7 +82,7 @@
 
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) {
-        alert("Speech Recognition not supported in this browser.");
+        alert("Speech recognition is not supported in this browser.");
         return;
       }
 
@@ -220,7 +115,7 @@
 
       recognition.onend = function () {
         if (isListening) {
-          recognition.start(); // Resume after silence
+          recognition.start();
         }
       };
 
@@ -241,10 +136,6 @@
       document.getElementById('transcript').innerText = '';
     }
 
-    function toggleDarkMode() {
-      document.body.classList.toggle("light");
-    }
-
     async function downloadTranscriptPDF() {
       const rawText = document.getElementById('transcript').innerText;
       const lines = rawText.trim().split("\n").filter(line => line.trim() !== "");
@@ -255,7 +146,7 @@
 
       doc.setFont("Courier", "normal");
       doc.setFontSize(12);
-      lines.forEach((line, i) => {
+      lines.forEach((line) => {
         if (y > 280) {
           doc.addPage();
           y = 10;

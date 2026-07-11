@@ -3,34 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>School Report Generator</title>
-
-  <!-- Include jsPDF and jsPDF-AutoTable libraries -->
+  <title>Report Generator — Charlton</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
   <script src="scripts.js" defer></script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4319740425445688"
-     crossorigin="anonymous"></script>
-  <!-- Link to Stylesheet -->
-  <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
-
 <body>
-  <div class="container">
-    <header>
+  <nav>
+    <a class="logo" href="index.html">Charlton</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Work</a></li>
+      <li><a href="comps.html">Projects</a></li>
+      <li><a href="report.html" class="active">Tools</a></li>
+    </ul>
+  </nav>
+
+  <div class="page">
+    <div class="page-header">
+      <a class="back-link" href="index.html">&larr; Back</a>
       <h1>School Report Generator</h1>
-    </header>
+      <p>Create student report cards and export as PDF.</p>
+    </div>
 
     <section class="student-info">
-      <h2>Student Information</h2>
       <div class="form-group">
-        <label for="studentName">Student Name:</label>
+        <label for="studentName">Student Name</label>
         <input type="text" id="studentName" placeholder="Enter student name" required>
       </div>
-
       <div class="form-group">
-        <label for="system">Grading System:</label>
+        <label for="system">Grading System</label>
         <select id="system">
           <option value="zimsec">ZIMSEC</option>
           <option value="cambridge">Cambridge</option>
@@ -39,7 +42,7 @@
     </section>
 
     <section class="subjects-section">
-      <h2>Subjects</h2>
+      <div class="section-label" style="margin-top: 32px;">Subjects</div>
       <table class="subject-table">
         <thead>
           <tr>
@@ -52,19 +55,19 @@
       </table>
 
       <div class="total-score">
-        <label for="Total">Total:</label>
+        <label for="Total">Total</label>
         <input type="text" id="Total" readonly>
       </div>
 
       <div class="button-group">
         <button type="button" onclick="addSubject()">Add Subject</button>
-        <button type="button" onclick="clearReport()">Clear Report</button>
+        <button type="button" onclick="clearReport()">Clear</button>
         <button type="button" onclick="generateReport()">Generate Report</button>
       </div>
     </section>
 
     <section id="report" class="hidden">
-      <h2>Generated Report</h2>
+      <div class="section-label" style="margin-top: 32px;">Generated Report</div>
       <p>Report for: <strong><span id="reportName"></span></strong></p>
 
       <table id="reportTable">
@@ -81,10 +84,8 @@
         <button type="button" onclick="downloadPDF()">Download PDF</button>
       </div>
     </section>
-
-    <footer>
-      <p>© 2025 School Report Generator by Charlton</p>
-    </footer>
   </div>
+
+  <footer>&copy; 2025 Charlton</footer>
 </body>
 </html>
